@@ -1,0 +1,28 @@
+class Solution:
+    def maxNumber(self, nums1: List[int], nums2: List[int], k: int) -> List[int]:
+        def one(nums,k):
+            stack=[]
+            remain=len(nums)-k
+            for i in nums:
+                while k>0 and len(stack)>0 and stack[-1]<i:
+                    stack.pop(-1)
+                    k-=1
+                stack.append(i)
+            return stack[:remain]
+        p=[]
+        for i in range(min(len(nums1),k)+1):
+            j=k-i
+            if j>len(nums2):
+                continue
+            l1=one(nums1,len(nums1)-i)
+            l2=one(nums2,len(nums2)-j)
+            l=[]
+            while l1 or l2:
+                if l1<l2:
+                    l.append(l2[0])
+                    l2.pop(0)
+                else:
+                    l.append(l1[0])
+                    l1.pop(0)
+            p.append(l)
+        return max(p)
